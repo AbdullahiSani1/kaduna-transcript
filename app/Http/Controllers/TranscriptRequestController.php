@@ -1,0 +1,146 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\TranscriptRequest;
+use App\Models\Payment;
+use App\Models\Transcript;
+use App\Mail\TranscriptRequestConfirmation;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
+
+class TranscriptRequestController extends Controller
+{
+    public function create()
+    {
+        $student = auth()->user()->student;
+        return view('student.transcript-request', compact('student'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'purpose' => 'required|in:employment,further_studies,other',
+            'destination_address' => 'nullable|string',
+        ]);
+
+        $student = auth()->user()->student;
+
+        $referenceNumber = 'TR-' . date('Y') . '-' . strtoupper(uniqid());
+
+        $transcriptRequest = TranscriptRequest::create([
+            'student_id' => $student->id,
+            'reference_number' => $referenceNumber,
+            'purpose' => $request->purpose,
+            'destination_address' => $request->destination_address,
+            'status' => 'pending',
+        ]);
+
+        // Create a simulated payment record
+        Payment::create([
+            'transcript_request_id' => $transcriptRequest->id,
+            'remita_rrr' => 'RRR' . rand(1000000000, 9999999999),
+            'amount' => 5000.00,
+            'status' => 'pending',
+        ]);
+
+        // Send confirmation email to the student
+        Mail::to($student->user->email)->send(
+            new TranscriptRequestConfirmation($transcriptRequest->load('payment'))
+        );
+
+        return redirect()->route('student.transcript.payment', $transcriptRequest->id);
+    }
+
+    public function payment($id)
+    {
+        $transcriptRequest = TranscriptRequest::with('payment')->findOrFail($id);
+
+        // Security check - ensure this belongs to logged-in student
+        if ($transcriptRequest->student_id !== auth()->user()->student->id) {
+            abort(403);
+        }
+
+        return view('student.transcript-payment', compact('transcriptRequest'));
+    }
+
+    public function confirmPayment($id)
+    {
+        $transcriptRequest = TranscriptRequest::with('payment')->findOrFail($id);
+
+        if ($transcriptRequest->student_id !== auth()->user()->student->id) {
+            abort(403);
+        }
+
+        // Simulate successful payment
+        $transcriptRequest->payment->update([
+            'status' => 'successful',
+            'paid_at' => now(),
+        ]);
+
+        $transcriptRequest->update(['status' => 'payment_confirmed']);
+
+        return redirect()->route('student.dashboard')->with('success', 'Payment confirmed! Your request is now being processed.');
+    }
+
+    public function index()
+    {
+        $student = auth()->user()->student;
+        $requests = $student->transcriptRequests()->with('payment', 'transcript')->latest()->get();
+        return view('student.transcript-requests', compact('requests'));
+    }
+
+
+    public function download($id)
+    {
+        $transcriptRequest = TranscriptRequest::with('transcript')->findOrFail($id);
+
+        if ($transcriptRequest->student_id !== auth()->user()->student->id) {
+            abort(403);
+        }
+
+        if (!$transcriptRequest->transcript) {
+            abort(404, 'Transcript not yet generated.');
+        }
+
+        $path = storage_path('app/public/' . $transcriptRequest->transcript->file_path);
+
+        return response()->download($path);
+    }
+
+    public function verifyPayment(Request $request, $id)
+    {
+        $transcriptRequest = TranscriptRequest::with('payment', 'student.user')->findOrFail($id);
+
+        if ($transcriptRequest->student_id !== auth()->user()->student->id) {
+            abort(403);
+        }
+
+        $reference = $request->query('reference');
+
+        // Verify with Paystack API
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . config('paystack.secret_key'),
+            'Content-Type' => 'application/json',
+        ])->get('https://api.paystack.co/transaction/verify/' . $reference);
+
+        $data = $response->json();
+
+        if ($data['status'] && $data['data']['status'] === 'success') {
+            $transcriptRequest->payment->update([
+                'status' => 'successful',
+                'paid_at' => now(),
+                'remita_rrr' => $reference,
+            ]);
+
+            $transcriptRequest->update(['status' => 'payment_confirmed']);
+
+            return redirect()->route('student.dashboard')
+                ->with('success', 'Payment successful! Your transcript request is now being processed.');
+        }
+
+        return redirect()->route('student.transcript.payment', $id)
+            ->with('error', 'Payment verification failed. Please try again.');
+    }
+}
