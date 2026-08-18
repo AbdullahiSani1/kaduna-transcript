@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -30,15 +30,6 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interactio
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Configure Apache
-RUN a2enmod rewrite
-COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
-
-# Cache Laravel config
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
-
 EXPOSE 8000
 
-CMD bash -c "sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf && sed -i 's/*:80/*:8000/' /etc/apache2/sites-available/000-default.conf && apache2-foreground"
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
