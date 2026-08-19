@@ -17,32 +17,34 @@
                     + Add Course
                 </a>
 
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b">
-                            <th class="py-2">Code</th>
-                            <th class="py-2">Title</th>
-                            <th class="py-2">Units</th>
-                            <th class="py-2">Program</th>
-                            <th class="py-2">Level</th>
-                            <th class="py-2">Semester</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($courses as $course)
+                <div class="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+                    <table class="w-full text-left border-collapse min-w-[560px]">
+                        <thead>
                             <tr class="border-b">
-                                <td class="py-2">{{ $course->course_code }}</td>
-                                <td class="py-2">{{ $course->course_title }}</td>
-                                <td class="py-2">{{ $course->credit_unit }}</td>
-                                <td class="py-2">{{ $course->program->program_code }}</td>
-                                <td class="py-2">{{ $course->level }}</td>
-                                <td class="py-2">{{ ucfirst($course->semester) }}</td>
+                                <th class="py-2">Code</th>
+                                <th class="py-2">Title</th>
+                                <th class="py-2">Units</th>
+                                <th class="py-2">Program</th>
+                                <th class="py-2">Level</th>
+                                <th class="py-2">Semester</th>
                             </tr>
-                        @empty
-                            <tr><td colspan="6" class="py-4 text-center text-gray-500">No courses yet.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse ($courses as $course)
+                                <tr class="border-b">
+                                    <td class="py-2">{{ $course->course_code }}</td>
+                                    <td class="py-2">{{ $course->course_title }}</td>
+                                    <td class="py-2">{{ $course->credit_unit }}</td>
+                                    <td class="py-2">{{ $course->program->program_code }}</td>
+                                    <td class="py-2">{{ $course->level }}</td>
+                                    <td class="py-2">{{ ucfirst($course->semester) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="6" class="py-4 text-center text-gray-500">No courses yet.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="mt-4">{{ $courses->links() }}</div>
             </div>

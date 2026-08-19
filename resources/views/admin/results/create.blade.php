@@ -28,7 +28,7 @@
                 <form method="POST" action="{{ route('admin.results.store', $student->id) }}" class="mb-8 p-4 bg-gray-50 rounded-md">
                     @csrf
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="mb-4">
                             <label class="block font-medium text-sm text-gray-700">Course</label>
                             <select name="course_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
@@ -74,42 +74,44 @@
                 </form>
 
                 <h3 class="text-lg font-semibold mb-4">Existing Results</h3>
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b">
-                            <th class="py-2">Course</th>
-                            <th class="py-2">Score</th>
-                            <th class="py-2">Grade</th>
-                            <th class="py-2">GP</th>
-                            <th class="py-2">Session</th>
-                            <th class="py-2">Level</th>
-                            <th class="py-2">Semester</th>
-                            <th class="py-2">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($results as $result)
+                <div class="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+                    <table class="w-full text-left border-collapse min-w-[640px]">
+                        <thead>
                             <tr class="border-b">
-                                <td class="py-2">{{ $result->course->course_code }}</td>
-                                <td class="py-2">{{ $result->score }}</td>
-                                <td class="py-2">{{ $result->grade }}</td>
-                                <td class="py-2">{{ $result->grade_point }}</td>
-                                <td class="py-2">{{ $result->academic_session }}</td>
-                                <td class="py-2">{{ $result->level }}</td>
-                                <td class="py-2">{{ ucfirst($result->semester) }}</td>
-                                <td class="py-2">
-                                    <form method="POST" action="{{ route('admin.results.destroy', $result->id) }}" onsubmit="return confirm('Delete this result?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 underline">Delete</button>
-                                    </form>
-                                </td>
+                                <th class="py-2">Course</th>
+                                <th class="py-2">Score</th>
+                                <th class="py-2">Grade</th>
+                                <th class="py-2">GP</th>
+                                <th class="py-2">Session</th>
+                                <th class="py-2">Level</th>
+                                <th class="py-2">Semester</th>
+                                <th class="py-2">Action</th>
                             </tr>
-                        @empty
-                            <tr><td colspan="8" class="py-4 text-center text-gray-500">No results yet.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse ($results as $result)
+                                <tr class="border-b">
+                                    <td class="py-2">{{ $result->course->course_code }}</td>
+                                    <td class="py-2">{{ $result->score }}</td>
+                                    <td class="py-2">{{ $result->grade }}</td>
+                                    <td class="py-2">{{ $result->grade_point }}</td>
+                                    <td class="py-2">{{ $result->academic_session }}</td>
+                                    <td class="py-2">{{ $result->level }}</td>
+                                    <td class="py-2">{{ ucfirst($result->semester) }}</td>
+                                    <td class="py-2">
+                                        <form method="POST" action="{{ route('admin.results.destroy', $result->id) }}" onsubmit="return confirm('Delete this result?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 underline">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="8" class="py-4 text-center text-gray-500">No results yet.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

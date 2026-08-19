@@ -17,36 +17,38 @@
                     + Add Admin
                 </a>
 
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b">
-                            <th class="py-2">Name</th>
-                            <th class="py-2">Email</th>
-                            <th class="py-2">Staff ID</th>
-                            <th class="py-2">Department</th>
-                            <th class="py-2">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($admins as $admin)
+                <div class="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+                    <table class="w-full text-left border-collapse min-w-[560px]">
+                        <thead>
                             <tr class="border-b">
-                                <td class="py-2">{{ $admin->name }}</td>
-                                <td class="py-2">{{ $admin->email }}</td>
-                                <td class="py-2">{{ $admin->admin->staff_id ?? 'N/A' }}</td>
-                                <td class="py-2">{{ $admin->admin->department ?? 'N/A' }}</td>
-                                <td class="py-2">
-                                    <form method="POST" action="{{ route('superadmin.admins.destroy', $admin->id) }}" onsubmit="return confirm('Remove this admin?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 underline">Remove</button>
-                                    </form>
-                                </td>
+                                <th class="py-2">Name</th>
+                                <th class="py-2">Email</th>
+                                <th class="py-2">Staff ID</th>
+                                <th class="py-2">Department</th>
+                                <th class="py-2">Action</th>
                             </tr>
-                        @empty
-                            <tr><td colspan="5" class="py-4 text-center text-gray-500">No admins yet.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse ($admins as $admin)
+                                <tr class="border-b">
+                                    <td class="py-2">{{ $admin->name }}</td>
+                                    <td class="py-2">{{ $admin->email }}</td>
+                                    <td class="py-2">{{ $admin->admin->staff_id ?? 'N/A' }}</td>
+                                    <td class="py-2">{{ $admin->admin->department ?? 'N/A' }}</td>
+                                    <td class="py-2">
+                                        <form method="POST" action="{{ route('superadmin.admins.destroy', $admin->id) }}" onsubmit="return confirm('Remove this admin?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 underline">Remove</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="5" class="py-4 text-center text-gray-500">No admins yet.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

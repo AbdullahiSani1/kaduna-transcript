@@ -28,12 +28,12 @@
         }
     </script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center px-3">
 
     <div class="w-full max-w-5xl mx-4 bg-white rounded-2xl shadow-lg overflow-hidden flex">
 
         {{-- LEFT PANEL --}}
-        <div class="hidden md:flex flex-col justify-between bg-primary-700 text-white w-1/2 p-10">
+        <div class="hidden md:flex flex-col justify-between bg-primary-700 text-white w-1/2 p-8 lg:p-10">
             <div>
                 <a href="/" class="flex items-center gap-3 mb-10">
                     <img src="/images/KADPOLY_LOGO.jpg" alt="KadPoly Logo" class="w-14 h-14 object-contain rounded-full bg-white p-1">
@@ -78,7 +78,7 @@
         </div>
 
         {{-- RIGHT PANEL --}}
-        <div class="w-full md:w-1/2 p-10 flex flex-col justify-center">
+        <div class="w-full md:w-1/2 p-6 sm:p-10 flex flex-col justify-center">
 
             <div class="mb-8 text-center md:text-left">
                 <h1 class="text-2xl font-bold text-gray-800">Sign in to your account</h1>

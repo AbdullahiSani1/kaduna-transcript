@@ -24,7 +24,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
-    <div class="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full mx-4">
+    <div class="bg-white rounded-2xl shadow-lg p-5 sm:p-8 max-w-md w-full mx-4">
 
         <div class="flex items-center gap-3 mb-6">
             <img src="/images/KADPOLY_LOGO.jpg" alt="KadPoly Logo" class="w-12 h-12 object-contain">

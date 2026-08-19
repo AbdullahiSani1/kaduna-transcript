@@ -32,12 +32,12 @@
                 $color = $statusColors[$transcriptRequest->status] ?? $statusColors['pending'];
             @endphp
 
-            <div class="rounded-2xl {{ $color['bg'] }} border {{ $color['border'] }} p-5 flex items-center justify-between">
+            <div class="rounded-2xl {{ $color['bg'] }} border {{ $color['border'] }} p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
                     <p class="text-xs font-semibold {{ $color['text'] }} uppercase tracking-wide">Current Status</p>
                     <p class="text-2xl font-bold {{ $color['text'] }} mt-1">{{ str_replace('_', ' ', ucfirst($transcriptRequest->status)) }}</p>
                 </div>
-                <span class="px-4 py-2 rounded-full text-sm font-semibold {{ $color['badge'] }}">
+                <span class="px-4 py-2 rounded-full text-sm font-semibold {{ $color['badge'] }} break-all">
                     Ref: {{ $transcriptRequest->reference_number }}
                 </span>
             </div>
@@ -193,7 +193,7 @@
                 </h3>
 
                 @if ($transcriptRequest->transcript)
-                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center justify-between">
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div>
                             <p class="text-sm font-semibold text-green-800">Transcript Generated</p>
                             <p class="text-xs text-green-600 mt-1">
@@ -204,19 +204,19 @@
                         </div>
                         <a href="{{ route('admin.transcript.download', $transcriptRequest->id) }}"
                             style="background-color: #16a34a;"
-                            class="text-white text-sm font-semibold px-5 py-2 rounded-lg hover:opacity-90 transition">
+                            class="text-white text-sm font-semibold px-5 py-2 rounded-lg hover:opacity-90 transition w-full sm:w-auto text-center">
                             Download PDF
                         </a>
                     </div>
                 @else
-                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center justify-between">
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div>
                             <p class="text-sm font-semibold text-gray-700">No transcript generated yet</p>
                             <p class="text-xs text-gray-500 mt-1">Make sure payment is confirmed and results are uploaded before generating.</p>
                         </div>
-                        <form method="POST" action="{{ route('admin.transcript.generate', $transcriptRequest->id) }}">
+                        <form method="POST" action="{{ route('admin.transcript.generate', $transcriptRequest->id) }}" class="w-full sm:w-auto">
                             @csrf
-                            <button type="submit" class="bg-purple-600 text-white text-sm font-semibold px-5 py-2 rounded-lg hover:opacity-90 transition">
+                            <button type="submit" class="bg-purple-600 text-white text-sm font-semibold px-5 py-2 rounded-lg hover:opacity-90 transition w-full sm:w-auto">
                                 Generate Transcript
                             </button>
                         </form>
