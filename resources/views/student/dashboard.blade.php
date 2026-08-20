@@ -15,7 +15,7 @@
             @endif
 
             {{-- Welcome Banner --}}
-            <div class="bg-primary-700 rounded-2xl p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="bg-primary-700 sm:rounded-2xl p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div class="flex items-center gap-4">
                     <img src="/images/KADPOLY_LOGO.jpg" alt="KadPoly" class="w-16 h-16 object-contain rounded-full bg-white p-1">
                     <div>

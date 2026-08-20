@@ -32,7 +32,7 @@
                 $color = $statusColors[$transcriptRequest->status] ?? $statusColors['pending'];
             @endphp
 
-            <div class="rounded-2xl {{ $color['bg'] }} border {{ $color['border'] }} p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="{{ $color['bg'] }} border {{ $color['border'] }} sm:rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
                     <p class="text-xs font-semibold {{ $color['text'] }} uppercase tracking-wide">Current Status</p>
                     <p class="text-2xl font-bold {{ $color['text'] }} mt-1">{{ str_replace('_', ' ', ucfirst($transcriptRequest->status)) }}</p>
