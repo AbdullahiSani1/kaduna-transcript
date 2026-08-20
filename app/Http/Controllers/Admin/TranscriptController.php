@@ -11,6 +11,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 use App\Mail\TranscriptReady;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class TranscriptController extends Controller
 {
@@ -53,8 +54,13 @@ class TranscriptController extends Controller
             'qrCode' => $qrCode,
         ]);
 
+        // Ensure the directory exists on disk before saving
+        Storage::makeDirectory('public/transcripts');
+
         $fileName = 'transcripts/' . $transcriptNumber . '.pdf';
-        $pdf->save(storage_path('app/public/' . $fileName));
+        
+        // Save using Storage facade
+        Storage::put('public/' . $fileName, $pdf->output());
 
         $transcript->update(['file_path' => $fileName]);
 
@@ -76,8 +82,12 @@ class TranscriptController extends Controller
             abort(404, 'Transcript not yet generated.');
         }
 
-        $path = storage_path('app/public/' . $transcriptRequest->transcript->file_path);
+        $filePath = 'public/' . $transcriptRequest->transcript->file_path;
 
-        return response()->download($path);
+        if (!Storage::exists($filePath)) {
+            abort(404, 'Transcript file not found on server.');
+        }
+
+        return response()->download(storage_path('app/' . $filePath));
     }
 }
