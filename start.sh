@@ -2,6 +2,9 @@
 envsubst '${PORT}' < /etc/nginx/sites-available/default.template > /etc/nginx/sites-available/default
 php artisan migrate --force
 
+# Force the SuperAdminSeeder to run on every deploy
+php artisan db:seed --class=SuperAdminSeeder --force
+
 PROGRAM_COUNT=$(php artisan tinker --execute="echo \App\Models\Program::count();")
 if [ "$PROGRAM_COUNT" = "0" ]; then
     php artisan db:seed --force
