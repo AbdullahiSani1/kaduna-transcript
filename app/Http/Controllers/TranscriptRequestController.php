@@ -9,6 +9,7 @@ use App\Models\Transcript;
 use App\Mail\TranscriptRequestConfirmation;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class TranscriptRequestController extends Controller
 {
@@ -96,17 +97,17 @@ class TranscriptRequestController extends Controller
     {
         $transcriptRequest = TranscriptRequest::with('transcript')->findOrFail($id);
 
-        if ($transcriptRequest->student_id !== auth()->user()->student->id) {
-            abort(403);
+        if (!$transcriptRequest->transcript || !$transcriptRequest->transcript->file_path) {
+            abort(404, 'Transcript file not found for this request.');
         }
 
-        if (!$transcriptRequest->transcript) {
-            abort(404, 'Transcript not yet generated.');
+        $filePath = 'public/' . $transcriptRequest->transcript->file_path;
+
+        if (!Storage::exists($filePath)) {
+            abort(404, 'Transcript PDF file does not exist on server.');
         }
 
-        $path = storage_path('app/public/' . $transcriptRequest->transcript->file_path);
-
-        return response()->download($path);
+        return Storage::download($filePath);
     }
 
     public function verifyPayment(Request $request, $id)
