@@ -78,16 +78,16 @@ class TranscriptController extends Controller
     {
         $transcriptRequest = TranscriptRequest::with('transcript')->findOrFail($transcriptRequestId);
 
-        if (!$transcriptRequest->transcript) {
-            abort(404, 'Transcript not yet generated.');
+        if (!$transcriptRequest->transcript || !$transcriptRequest->transcript->file_path) {
+            abort(404, 'Transcript file record not found.');
         }
 
         $filePath = 'public/' . $transcriptRequest->transcript->file_path;
 
         if (!Storage::exists($filePath)) {
-            abort(404, 'Transcript file not found on server.');
+            abort(404, 'Transcript file does not exist on disk.');
         }
 
-        return response()->download(storage_path('app/' . $filePath));
+        return Storage::download($filePath);
     }
 }
