@@ -10,6 +10,7 @@ use App\Mail\TranscriptRequestConfirmation;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TranscriptRequestController extends Controller
 {
