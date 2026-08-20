@@ -44,7 +44,7 @@
         </tr>
         <tr>
             <td><strong>Admission Year:</strong> {{ $student->admission_year }}</td>
-            <td><strong>Issue Date:</strong> {{ $transcript->issued_at->format('d M Y') }}</td>
+            <td><strong>Issue Date:</strong> {{ \Carbon\Carbon::parse($transcript->issue_date ?? now())->format('M d, Y') }}</td>
         </tr>
     </table>
 
