@@ -91,7 +91,7 @@
                     <p style="margin: 4px 0 0; color: #555; font-size: 10px;">Or scan the QR code at the top right corner of this document.</p>
                 </td>
                 <td style="text-align: right; font-size: 11px; color: #333;">
-                    <p style="margin: 0;">Issued: {{ $transcript->issued_at->format('d M Y') }}</p>
+                    <p style="margin: 0;">Issued: {{ $transcript->issued_at ? \Carbon\Carbon::parse($transcript->issued_at)->format('d M Y') : 'N/A' }}</p>
                 </td>
             </tr>
         </table>
