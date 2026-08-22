@@ -33,14 +33,29 @@
     {{-- NAVBAR --}}
     <nav class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-            <div class="flex items-center gap-2">
-                <img src="/images/KADPOLY_LOGO.jpg" alt="Kaduna Polytechnic Logo" class="w-10 h-10 object-contain">
-                <span class="font-bold text-xl text-primary-700">KadPoly Transcript</span>
+            <div class="flex items-center gap-2 min-w-0">
+                <img src="/images/KADPOLY_LOGO.jpg" alt="Kaduna Polytechnic Logo" class="w-10 h-10 object-contain shrink-0">
+                <span class="font-bold text-lg sm:text-xl text-primary-700 whitespace-nowrap">KadPoly Transcript</span>
             </div>
-            <div class="flex items-center gap-4">
+
+            {{-- Desktop links --}}
+            <div class="hidden md:flex items-center gap-4">
                 <a href="{{ route('login') }}" class="text-gray-600 hover:text-primary-600 font-medium transition">Login</a>
                 <a href="{{ route('register') }}" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition">Register</a>
             </div>
+
+            {{-- Mobile hamburger button --}}
+            <button onclick="document.getElementById('mobile-nav-menu').classList.toggle('hidden')" class="md:hidden p-2 text-gray-600 hover:text-primary-600" aria-label="Toggle menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        {{-- Mobile dropdown menu --}}
+        <div id="mobile-nav-menu" class="hidden md:hidden border-t border-gray-100 px-4 py-3 space-y-2">
+            <a href="{{ route('login') }}" class="block text-gray-600 hover:text-primary-600 font-medium py-2">Login</a>
+            <a href="{{ route('register') }}" class="block bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-lg font-medium text-center transition">Register</a>
         </div>
     </nav>
 
