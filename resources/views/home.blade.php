@@ -35,7 +35,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
             <div class="flex items-center gap-2 min-w-0">
                 <img src="/images/KADPOLY_LOGO.jpg" alt="Kaduna Polytechnic Logo" class="w-10 h-10 object-contain shrink-0">
-                <span class="font-bold text-lg sm:text-xl text-primary-700 whitespace-nowrap">KadPoly Transcript</span>
+                <span class="font-bold text-lg sm:text-xl text-primary-700 whitespace-nowrap">KPT Transcript</span>
             </div>
 
             {{-- Desktop links --}}
