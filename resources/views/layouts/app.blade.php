@@ -58,5 +58,6 @@
 
         @include('layouts.bottom-nav')
         @include('layouts.toast')
+        @include('layouts.loading')
     </body>
 </html>

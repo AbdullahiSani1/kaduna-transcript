@@ -223,5 +223,7 @@
         </div>
     </footer>
 
+    @include('layouts.loading')
+
 </body>
 </html>

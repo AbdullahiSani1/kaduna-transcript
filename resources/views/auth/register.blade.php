@@ -132,6 +132,7 @@
             </form>
         </div>
     </div>
+    @include('layouts.loading')
 
 </body>
 </html>
