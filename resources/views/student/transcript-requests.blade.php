@@ -42,9 +42,9 @@
                                 </div>
                                 <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-200">
                                     <span class="text-xs text-gray-500">{{ $req->created_at->format('d M Y') }}</span>
-                                    @if ($req->status === 'completed' && $req->transcript)
-                                        <a href="{{ route('student.transcript.download', $req->id) }}" class="text-green-600 text-sm font-medium underline">Download PDF</a>
-                                    @elseif ($req->payment && $req->payment->status === 'pending')
+                                    {{-- Download link removed: applications are processed manually now,
+                                         no transcript file is ever attached to $req->transcript. --}}
+                                    @if ($req->payment && $req->payment->status === 'pending')
                                         <a href="{{ route('student.transcript.payment', $req->id) }}" class="text-blue-600 text-sm font-medium underline">Complete Payment</a>
                                     @else
                                         <span class="text-gray-400 text-sm">—</span>
@@ -78,9 +78,9 @@
                                         </td>
                                         <td class="py-2">{{ $req->created_at->format('d M Y') }}</td>
                                         <td class="py-2">
-                                            @if ($req->status === 'completed' && $req->transcript)
-                                                <a href="{{ route('student.transcript.download', $req->id) }}" class="text-green-600 underline">Download PDF</a>
-                                            @elseif ($req->payment && $req->payment->status === 'pending')
+                                            {{-- Download link removed: applications are processed manually now,
+                                                 no transcript file is ever attached to $req->transcript. --}}
+                                            @if ($req->payment && $req->payment->status === 'pending')
                                                 <a href="{{ route('student.transcript.payment', $req->id) }}" class="text-blue-600 underline">Complete Payment</a>
                                             @else
                                                 <span class="text-gray-400">—</span>

@@ -147,9 +147,9 @@
                                         <span class="px-2 py-1 rounded-full text-xs {{ $statusColors[$req->status] ?? 'bg-gray-100 text-gray-800' }}">
                                             {{ str_replace('_', ' ', ucfirst($req->status)) }}
                                         </span>
-                                        @if ($req->status === 'completed' && $req->transcript)
-                                            <a href="{{ route('student.transcript.download', $req->id) }}" class="text-xs text-primary-600 hover:underline">Download</a>
-                                        @elseif ($req->payment && $req->payment->status === 'pending')
+                                        {{-- Download link removed: applications are processed manually now,
+                                             no transcript file is ever attached to $req->transcript. --}}
+                                        @if ($req->payment && $req->payment->status === 'pending')
                                             <a href="{{ route('student.transcript.payment', $req->id) }}" class="text-xs text-blue-600 hover:underline">Pay Now</a>
                                         @endif
                                     </div>
@@ -163,7 +163,7 @@
             {{-- Quick Actions --}}
             <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                 <h3 class="font-semibold text-gray-800 mb-4">Quick Actions</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <a href="{{ route('student.transcript.create') }}" class="flex flex-col items-center gap-2 p-4 bg-primary-50 rounded-xl hover:bg-primary-100 transition text-center">
                         <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -176,22 +176,13 @@
                         </svg>
                         <span class="text-sm font-medium text-blue-700">My Requests</span>
                     </a>
-                    @if ($completed > 0)
-                        @php $lastCompleted = $requests->where('status', 'completed')->first(); @endphp
-                        <a href="{{ route('student.transcript.download', $lastCompleted->id) }}" class="flex flex-col items-center gap-2 p-4 bg-green-50 rounded-xl hover:bg-green-100 transition text-center">
-                            <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            <span class="text-sm font-medium text-green-700">Download Transcript</span>
-                        </a>
-                    @else
-                        <div class="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-xl text-center opacity-50 cursor-not-allowed">
-                            <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            <span class="text-sm font-medium text-gray-400">Download Transcript</span>
-                        </div>
-                    @endif
+                    {{-- "Download Transcript" quick action removed: it linked to
+                         student.transcript.download, which is disabled now that
+                         applications are processed manually and no file is ever
+                         attached. It previously only checked $completed > 0, not
+                         whether a transcript file existed, so it would have thrown
+                         a RouteNotFoundException for any student with a completed
+                         application under this workflow. --}}
                     <a href="{{ route('profile.edit') }}" class="flex flex-col items-center gap-2 p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition text-center">
                         <svg class="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>

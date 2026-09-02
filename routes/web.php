@@ -41,8 +41,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/results/{studentId}', [AdminResultController::class, 'store'])->name('admin.results.store');
         Route::delete('/results/{id}', [AdminResultController::class, 'destroy'])->name('admin.results.destroy');
 
-        Route::post('/transcript-requests/{id}/generate', [AdminTranscriptController::class, 'generate'])->name('admin.transcript.generate');
-        Route::get('/transcript-requests/{id}/download', [AdminTranscriptController::class, 'download'])->name('admin.transcript.download');
+        // Disabled for now — application-only workflow, admin processes transcripts
+        // manually outside the system. Controller code is left intact for later reuse.
+        // Route::post('/transcript-requests/{id}/generate', [AdminTranscriptController::class, 'generate'])->name('admin.transcript.generate');
+        // Route::get('/transcript-requests/{id}/download', [AdminTranscriptController::class, 'download'])->name('admin.transcript.download');
     });
 });
 
@@ -76,7 +78,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/student/profile/setup', [StudentProfileController::class, 'create'])->name('student.profile.create');
     Route::post('/student/profile/setup', [StudentProfileController::class, 'store'])->name('student.profile.store');
-    Route::get('/student/transcript/{id}/download', [TranscriptRequestController::class, 'download'])->name('student.transcript.download');
+    // Disabled for now — no transcript file is generated for the student to download
+    // until the application-only workflow is revisited. Controller code left intact.
+    // Route::get('/student/transcript/{id}/download', [TranscriptRequestController::class, 'download'])->name('student.transcript.download');
 });
 
 require __DIR__.'/auth.php';

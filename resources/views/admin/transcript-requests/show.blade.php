@@ -159,8 +159,11 @@
 
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">New Status</label>
+                        {{-- Restricted to the three manual application stages. 'payment_confirmed' is
+                             set automatically by the payment flow; 'ready' and 'rejected' are left in
+                             the DB enum but not exposed here for now. --}}
                         <select name="status" class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
-                            @foreach (['pending', 'payment_confirmed', 'processing', 'ready', 'completed', 'rejected'] as $status)
+                            @foreach (['pending', 'processing', 'completed'] as $status)
                                 <option value="{{ $status }}" {{ $transcriptRequest->status === $status ? 'selected' : '' }}>
                                     {{ str_replace('_', ' ', ucfirst($status)) }}
                                 </option>
@@ -183,7 +186,10 @@
                 </form>
             </div>
 
-            {{-- Transcript Generation --}}
+            {{-- Transcript Generation — disabled for now (application-only workflow).
+                 Admin processes the transcript manually outside the system.
+                 The original PDF/QR generation block is preserved below in a Blade
+                 comment so it can be restored later without rebuilding it. --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
                     <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -192,6 +198,14 @@
                     Transcript Document
                 </h3>
 
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                    <p class="text-sm font-semibold text-gray-700">Processed manually</p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        This application is handled outside the system for now. Update the status above to reflect progress.
+                    </p>
+                </div>
+
+                {{--
                 @if ($transcriptRequest->transcript)
                     <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div>
@@ -222,6 +236,7 @@
                         </form>
                     </div>
                 @endif
+                --}}
             </div>
 
         </div>

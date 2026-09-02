@@ -24,8 +24,11 @@ class TranscriptRequestController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        // Admin only moves an application through these three manual stages.
+        // 'payment_confirmed' is set automatically by the payment flow, not chosen here.
+        // 'ready' and 'rejected' are left in the DB enum for now but unused by this form.
         $request->validate([
-            'status' => 'required|in:pending,payment_confirmed,processing,ready,completed,rejected',
+            'status' => 'required|in:pending,processing,completed',
             'admin_remarks' => 'nullable|string',
         ]);
 
