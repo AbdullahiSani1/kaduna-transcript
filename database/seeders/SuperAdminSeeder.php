@@ -10,11 +10,20 @@ class SuperAdminSeeder extends Seeder
 {
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'admin@transcript.com'],
+        $email = env('SUPERADMIN_EMAIL');
+        $password = env('SUPERADMIN_PASSWORD');
+
+        if (! $email || ! $password) {
+            $this->command?->warn('SUPERADMIN_EMAIL or SUPERADMIN_PASSWORD is not set. Skipping super admin creation.');
+            return;
+        }
+
+        // firstOrCreate so a redeploy never overwrites an existing password.
+        User::firstOrCreate(
+            ['email' => $email],
             [
                 'name' => 'Super Admin',
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make($password),
                 'role' => 'super_admin',
             ]
         );
