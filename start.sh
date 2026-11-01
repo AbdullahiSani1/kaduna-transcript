@@ -20,6 +20,12 @@ if [ "$PROGRAM_COUNT" = "0" ]; then
     php artisan db:seed --force
 fi
 
+# Demo accounts and requests. Only runs when SEED_DEMO_DATA=true is set in Render.
+# Safe to leave on (it never duplicates), but remove the variable before real use.
+if [ "$SEED_DEMO_DATA" = "true" ]; then
+    php artisan db:seed --class=DemoDataSeeder --force
+fi
+
 # Everything above runs as root and may create files (like laravel.log) owned by root.
 # php-fpm serves requests as www-data, so hand ownership back before starting.
 chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
